@@ -22,7 +22,8 @@ public class Banco : MonoBehaviour
     }
     private void IniciarQueue()
     {
-        Cliente[] aux = listaClientes.GetComponentsInChildren<Cliente>();
+        List<Cliente> aux = new List<Cliente>();
+        PegarComponentFilhos(aux, 0);
         foreach (var item in aux)
         {
             clientes.Enqueue(item);
@@ -30,6 +31,16 @@ public class Banco : MonoBehaviour
 
         panelWait.SetActive(false);
         panelGame.SetActive(true);
+    }
+
+    // Questao 1
+    public void PegarComponentFilhos(List<Cliente> list, int index)
+    {
+        if (index >= listaClientes.transform.childCount)
+            return;
+
+        list.Add(listaClientes.transform.GetChild(index).GetComponent<Cliente>());
+        PegarComponentFilhos(list, index + 1);
     }
 
     public void AtenderCliente()
